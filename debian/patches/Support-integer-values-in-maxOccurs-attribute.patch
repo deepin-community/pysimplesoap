@@ -1,0 +1,84 @@
+From 0b94b326a534b8ccec3d47317a61e50d0f95c2f3 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Rapha=C3=ABl=20Hertzog?= <hertzog@debian.org>
+Date: Wed, 18 Jul 2018 12:39:08 +0200
+Subject: [PATCH] Support integer values in maxOccurs attribute
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+With the following complex type:
+```
+<element name="selectedContractList" nillable="true" type="tns1:selectedContractList"/>
+[...]
+<complexType name="selectedContractList">
+    <sequence>
+	<element maxOccurs="25" minOccurs="1" name="selectedContract" type="xsd:string"/>
+    </sequence>
+</complexType>
+```
+
+pysimplesoap would generate the following key in the services description:
+```
+selectedContractList: selectedContractList
+```
+
+This does not allow the input of multiple values in any way. I was expecting to
+be able to pass this:
+```
+'selectedContractList': [ {'selectedContract': '...'}, … ]
+```
+
+But this would result in "TypeError: unhashable type: 'dict'" in the
+wsdl_validate_params() method. See full traceback below.
+
+With this patch, I'm now able to pass the desired structure.
+
+Full traceback of the unexpected error:
+```
+ERROR: test_do_web_payment (__main__.WebPaymentAPITestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "pypayline/tests-soap-services.py", line 101, in test_do_web_payment
+    cancel_url='http://freexian.com/cancel/',
+  File "/home/rhertzog/freexian/projets/boutique/python-payline/pypayline/client.py", line 220, in do_web_payment
+    notificationURL=notification_url
+  File "/home/rhertzog/freexian/projets/boutique/python-payline/pypayline/backends/soap.py", line 38, in doWebPayment
+    response = self.soap_client.doWebPayment(**data)
+  File "/usr/lib/python2.7/dist-packages/pysimplesoap/client.py", line 177, in <lambda>
+    return lambda *args, **kwargs: self.wsdl_call(attr, *args, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/pysimplesoap/client.py", line 351, in wsdl_call
+    return self.wsdl_call_with_args(method, args, kwargs)
+  File "/usr/lib/python2.7/dist-packages/pysimplesoap/client.py", line 372, in wsdl_call_with_args
+    method, params = self.wsdl_call_get_params(method, input, args, kwargs)
+  File "/usr/lib/python2.7/dist-packages/pysimplesoap/client.py", line 404, in wsdl_call_get_params
+    valid, errors, warnings = self.wsdl_validate_params(input, all_args)
+  File "/usr/lib/python2.7/dist-packages/pysimplesoap/client.py", line 474, in wsdl_validate_params
+    next_valid, next_errors, next_warnings = self.wsdl_validate_params(struct[key], value[key])
+  File "/usr/lib/python2.7/dist-packages/pysimplesoap/client.py", line 474, in wsdl_validate_params
+    next_valid, next_errors, next_warnings = self.wsdl_validate_params(struct[key], value[key])
+  File "/usr/lib/python2.7/dist-packages/pysimplesoap/client.py", line 470, in wsdl_validate_params
+    if key not in struct:
+TypeError: unhashable type: 'dict'
+```
+
+Bug: https://github.com/pysimplesoap/pysimplesoap/pull/169
+---
+ pysimplesoap/helpers.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/pysimplesoap/helpers.py b/pysimplesoap/helpers.py
+index b6e6ce0..49c07d2 100644
+--- a/pysimplesoap/helpers.py
++++ b/pysimplesoap/helpers.py
+@@ -237,7 +237,7 @@ def process_element(elements, element_name, node, element_type, xsd_uri,
+                 key = make_key(type_name, ref_type, fn_namespace)
+                 fn = elements.setdefault(key, Struct(key))
+ 
+-            if e['maxOccurs'] == 'unbounded' or (uri == soapenc_uri and type_name == 'Array'):
++            if (e['maxOccurs'] == 'unbounded' or int(e['maxOccurs'] or 0) > 1) or (uri == soapenc_uri and type_name == 'Array'):
+                 # it's an array... TODO: compound arrays? and check ns uri!
+                 if isinstance(fn, Struct):
+                     if len(children) > 1 or (dialect in ('jetty', )):
+-- 
+2.18.0
+

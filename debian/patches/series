@@ -1,0 +1,5 @@
+Add-quotes-to-SOAPAction-header-in-SoapClient.patch
+fix-httplib2-version-check.patch
+reorder-type-check-to-avoid-a-TypeError.patch
+Support-integer-values-in-maxOccurs-attribute.patch
+PR204.patch

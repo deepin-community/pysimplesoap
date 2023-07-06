@@ -1,0 +1,29 @@
+From 09f8712b0725d1e431c2d789f120f43c451e8d48 Mon Sep 17 00:00:00 2001
+From: Mariano Reingart <reingart@gmail.com>
+Date: Mon, 21 Nov 2022 22:40:41 -0300
+Subject: [PATCH] Remove inspect for Python 3.11 compatibility
+
+Fixes issue in pyafipws:
+```
+/opt/hostedtoolcache/Python/3.11.0/x64/lib/python3.11/site-packages/pysimplesoap/transport.py:[14](https://github.com/reingart/pyafipws/actions/runs/3519199212/jobs/5898894972#step:13:15)1: in <module>
+    if 'timeout' in inspect.getargspec(httplib2.Http.__init__)[0]:
+E   AttributeError: module 'inspect' has no attribute 'getargspec'
+```
+---
+ pysimplesoap/transport.py | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+--- a/pysimplesoap/transport.py
++++ b/pysimplesoap/transport.py
+@@ -104,10 +104,7 @@ else:
+     _http_connectors['httplib2'] = Httplib2Transport
+     _http_facilities.setdefault('proxy', []).append('httplib2')
+     _http_facilities.setdefault('cacert', []).append('httplib2')
+-
+-    import inspect
+-    if 'timeout' in inspect.getargspec(httplib2.Http.__init__)[0]:
+-        _http_facilities.setdefault('timeout', []).append('httplib2')
++    _http_facilities.setdefault('timeout', []).append('httplib2')
+ 
+ 
+ #
