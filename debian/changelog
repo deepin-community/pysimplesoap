@@ -1,5 +1,122 @@
-template-repository (1.0-1) unstable; urgency=medium
+pysimplesoap (1.16.2-5) unstable; urgency=medium
 
-  * Initial release
+  [ Debian Janitor ]
+  * Set upstream metadata fields: Repository-Browse.
+  * Remove obsolete field Name from debian/upstream/metadata (already present in
+    machine-readable debian/copyright).
+  * Set upstream metadata fields: Repository.
 
- -- Tsic404 <liuheng@deepin.org>  Sat, 28 Jan 2023 13:46:49 +0800
+  [ Sandro Tosi ]
+  * debian/patches/PR204.patch
+    - add compatibility with Python 3.11
+
+ -- Sandro Tosi <morph@debian.org>  Thu, 08 Dec 2022 10:45:55 -0500
+
+pysimplesoap (1.16.2-4) unstable; urgency=medium
+
+  [ Ondřej Nový ]
+  * d/control: Update Vcs-* fields with new Debian Python Team Salsa
+    layout.
+
+  [ Sandro Tosi ]
+  * Use the new Debian Python Team contact name and address
+  * debian/copyright
+    - extend packaging copyright years
+  * debian/control
+    - bump Standards-Version to 4.6.1 (no changes needed)
+    - bump debhelper-compat to 13
+
+ -- Sandro Tosi <morph@debian.org>  Sat, 04 Jun 2022 22:32:14 -0400
+
+pysimplesoap (1.16.2-3) unstable; urgency=medium
+
+  [ Debian Janitor ]
+  * Bump debhelper from old 10 to 12.
+  * Set upstream metadata fields: Name.
+  * Set upstream metadata fields: Bug-Database.
+  * Set upstream metadata fields: Bug-Submit.
+
+  [ Bastian Germann ]
+  * Avoid TypeError on list/dict (Closes: #812324)
+
+  [ Debian Janitor ]
+  * Update standards version to 4.5.0, no changes needed.
+
+  [ Sandro Tosi ]
+  * debian/control
+    - wrap-and-sort
+  * debian/copyright
+    - extend packaging copyright years
+
+ -- Sandro Tosi <morph@debian.org>  Sat, 25 Jul 2020 23:12:59 -0400
+
+pysimplesoap (1.16.2-2) unstable; urgency=medium
+
+  [ Ondřej Nový ]
+  * Use debhelper-compat instead of debian/compat.
+
+  [ Sandro Tosi ]
+  * debian/control
+    - add DPMT to Uploaders
+    - bump Standards-Version to 4.4.1 (no changes needed)
+  * Drop python2 support; Closes: #937538
+  * debian/copyright
+    - extend packaging copyright years
+  * debian/rules
+    - use pybuild
+
+ -- Sandro Tosi <morph@debian.org>  Wed, 13 Nov 2019 10:10:38 -0500
+
+pysimplesoap (1.16.2-1) unstable; urgency=medium
+
+  [ Ondřej Nový ]
+  * d/control: Set Vcs-* to salsa.debian.org
+  * d/copyright: Use https protocol in Format field
+  * d/watch: Use https protocol
+  * Convert git repository from git-dpm to gbp layout
+
+  [ Raphaël Hertzog ]
+  * New upstream release.
+  * Cherry-pick an upstream patch fixing a regression in 1.16.2
+    where the SOAPAction header was no longer quoted.
+  * Add a patch to properly support maxOccurs attribute.
+
+  [ Sandro Tosi ]
+  * Acknowledge NMU; Closes: #906127
+  * debian/control
+    - bump Standards-Version to 4.2.1 (no changes needed)
+  * debian/copyright
+    - extend packaging copyright years
+
+ -- Sandro Tosi <morph@debian.org>  Sat, 15 Dec 2018 12:31:32 -0500
+
+pysimplesoap (1.16-2.1) unstable; urgency=high
+
+  * Non-maintainer upload.
+  * Add patch from Aiden Woodruff to fix the version check
+    with httplib2 0.11. (Closes: #906127)
+
+ -- Adrian Bunk <bunk@debian.org>  Wed, 12 Sep 2018 18:19:58 +0300
+
+pysimplesoap (1.16-2) unstable; urgency=medium
+
+  [ Sandro Tosi ]
+  * debian/control
+    - set Vcs-* fields
+    - fix typo in long description; Closes: #799366
+    - update Homepage field to point to github
+    - bump Standards-Version to 3.9.8 (no changes needed)
+  * declare compat level 10
+  * debian/copyright
+    - extend packaging copyright years
+
+  [ Ondřej Nový ]
+  * Fixed VCS URL (https)
+
+ -- Sandro Tosi <morph@debian.org>  Sat, 07 Jan 2017 23:51:39 -0500
+
+pysimplesoap (1.16-1) unstable; urgency=low
+
+  * Initial release (Closes: #782970)
+
+ -- Sandro Tosi <morph@debian.org>  Tue, 21 Apr 2015 22:33:37 -0400

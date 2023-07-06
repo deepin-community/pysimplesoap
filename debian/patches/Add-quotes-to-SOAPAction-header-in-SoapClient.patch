@@ -1,0 +1,34 @@
+From 07a3203640574c81c83e25c5067046cf76031d9b Mon Sep 17 00:00:00 2001
+From: Daniel Mack <daniel@zonque.org>
+Date: Fri, 2 Mar 2018 09:52:14 +0100
+Subject: [PATCH] Add quotes to SOAPAction header in SoapClient
+
+According to the SOAP standard, the 'SOAPAction' HTTP field must be
+quoted by double quotes unless the URI is empty and 'there is no
+indication of the intent of the message' [1].
+
+Not having proper quoting leads to gupnp based devices reply with invalid
+XML. While there is a proposed fix for that to handle unquoted requests more
+gracefully [2], the real issue in SoapClient implementation.
+
+[1] https://www.w3.org/TR/2000/NOTE-SOAP-20000508/#_Toc478383528
+[2] https://bugzilla.gnome.org/show_bug.cgi?id=793955
+
+Bug: https://github.com/pysimplesoap/pysimplesoap/pull/161
+---
+ pysimplesoap/client.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/pysimplesoap/client.py b/pysimplesoap/client.py
+index 2518bca..48eefad 100755
+--- a/pysimplesoap/client.py
++++ b/pysimplesoap/client.py
+@@ -300,7 +300,7 @@ def send(self, method, xml):
+         }
+ 
+         if self.action is not None:
+-            headers['SOAPAction'] = soap_action
++            headers['SOAPAction'] = '"' + soap_action + '"'
+ 
+         headers.update(self.http_headers)
+         log.info("POST %s" % location)

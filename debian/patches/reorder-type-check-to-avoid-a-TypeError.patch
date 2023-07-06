@@ -1,0 +1,45 @@
+From 00fd7b71189996cd5c7769025f8d56fe23156119 Mon Sep 17 00:00:00 2001
+From: Benedikt Spranger <b.spranger@linutronix.de>
+Date: Wed, 20 Jan 2016 16:08:47 +0100
+Subject: [PATCH] reorder type check to avoid a TypeError
+
+Using a list or dict as return of a SOAP method led to an error:
+File "pysimplesoap/server.py", line 372, in parse_element
+    if v in TYPE_MAP.keys():
+    TypeError: unhashable type: 'list'
+
+Reorder the type check and add a comment to avoid this error.
+
+Signed-off-by: Benedikt Spranger <b.spranger@linutronix.de>
+---
+ pysimplesoap/server.py | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+Index: pysimplesoap-1.16/pysimplesoap/server.py
+===================================================================
+--- pysimplesoap-1.16.orig/pysimplesoap/server.py	2016-01-22 11:39:27.400682071 +0100
++++ pysimplesoap-1.16/pysimplesoap/server.py	2016-01-22 11:39:27.396682071 +0100
+@@ -369,9 +369,11 @@
+                     e['name'] = k
+                     if array:
+                         e[:] = {'minOccurs': "0", 'maxOccurs': "unbounded"}
+-                    if v in TYPE_MAP.keys():
+-                        t = 'xsd:%s' % TYPE_MAP[v]
+-                    elif v is None:
++
++                    # check list and dict first to avoid
++                    # TypeError: unhashable type: 'list' or
++                    # TypeError: unhashable type: 'dict'
++                    if v is None:
+                         t = 'xsd:anyType'
+                     elif isinstance(v, list):
+                         n = "ArrayOf%s%s" % (name, k)
+@@ -384,6 +386,8 @@
+                         n = "%s%s" % (name, k)
+                         parse_element(n, v.items(), complex=True)
+                         t = "tns:%s" % n
++                    elif v in TYPE_MAP.keys():
++                        t = 'xsd:%s' % TYPE_MAP[v]
+                     else:
+                         raise TypeError("unknonw type %s for marshalling" % str(v))
+                     e.add_attribute('type', t)

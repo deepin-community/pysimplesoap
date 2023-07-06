@@ -1,0 +1,5 @@
+version=3
+#opts=uversionmangle=s/(rc|a|b|c)/~$1/ \
+#https://pypi.debian.net/PySimpleSOAP/PySimpleSOAP-(.+)\.(?:zip|tgz|tbz|txz|(?:tar\.(?:gz|bz2|xz)))
+opts="filenamemangle=s/(?:.*)?v?(\d[\d\.]*)\.tar\.gz/<project>-$1.tar.gz/" \
+https://github.com/pysimplesoap/pysimplesoap/tags (?:.*/)?v?(\d[\d\.]*)\.tar\.gz
