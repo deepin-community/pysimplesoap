@@ -3,3 +3,4 @@ fix-httplib2-version-check.patch
 reorder-type-check-to-avoid-a-TypeError.patch
 Support-integer-values-in-maxOccurs-attribute.patch
 PR204.patch
+python3.12.patch
