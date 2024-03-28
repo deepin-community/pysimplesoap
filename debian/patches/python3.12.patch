@@ -1,0 +1,15 @@
+Description: Replace distutils by setuptools
+Bug-Debian: https://bugs.debian.org/1063443
+Author: Andreas Tille <tille@debian.org>
+Last-Update: Sun, 25 Feb 2024 12:26:05 +0100
+
+--- a/setup.py
++++ b/setup.py
+@@ -1,6 +1,6 @@
+ #!/usr/bin/env python
+ 
+-from distutils.core import setup
++from setuptools import setup
+ import os
+ import subprocess
+ import sys

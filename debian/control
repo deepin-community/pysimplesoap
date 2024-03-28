@@ -1,14 +1,16 @@
 Source: pysimplesoap
 Section: python
+Testsuite: autopkgtest-pkg-python
 Priority: optional
-Maintainer: Sandro Tosi <morph@debian.org>
-Uploaders: Debian Python Team <team+python@tracker.debian.org>,
+Maintainer: Debian Python Team <team+python@tracker.debian.org>,
 Build-Depends: debhelper-compat (= 13),
-               dh-python,
+               dh-sequence-python3,
                python3,
                python3-setuptools,
-Standards-Version: 4.6.1
+               python3-packaging
+Standards-Version: 4.6.2
 Homepage: https://github.com/pysimplesoap/pysimplesoap/
+Rules-Requires-Root: no
 Vcs-Git: https://salsa.debian.org/python-team/packages/pysimplesoap.git
 Vcs-Browser: https://salsa.debian.org/python-team/packages/pysimplesoap
 
@@ -18,6 +20,7 @@ Depends: python3-httplib2,
          python3-pycurl,
          ${misc:Depends},
          ${python3:Depends},
+         python3-packaging
 Description: simple and lightweight SOAP Library (Python 3)
  Python simple and lightweight SOAP library for client and server webservices
  interfaces, aimed to be as small and easy as possible, supporting most common

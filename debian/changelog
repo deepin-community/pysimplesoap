@@ -1,3 +1,23 @@
+pysimplesoap (1.16.2-7) unstable; urgency=medium
+
+  * orphan
+
+ -- Sandro Tosi <morph@debian.org>  Fri, 01 Mar 2024 20:58:46 -0500
+
+pysimplesoap (1.16.2-6) unstable; urgency=medium
+
+  * Team upload.
+  * Replace distutils by setuptools
+    Replace distutils in Debian patch
+    Closes: #1063443
+  * Standards-Version: 4.6.2 (routine-update)
+  * Testsuite: autopkgtest-pkg-python (routine-update)
+  * Build-Depends: s/dh-python/dh-sequence-python3/ (routine-update)
+  * Rules-Requires-Root: no (routine-update)
+  * watch file standard 4 (routine-update)
+
+ -- Andreas Tille <tille@debian.org>  Sun, 25 Feb 2024 18:56:20 +0100
+
 pysimplesoap (1.16.2-5) unstable; urgency=medium
 
   [ Debian Janitor ]
